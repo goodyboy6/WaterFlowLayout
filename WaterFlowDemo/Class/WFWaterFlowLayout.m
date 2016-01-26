@@ -105,10 +105,14 @@ static CGFloat itemPadding = 10;
     [self.frameDictionary removeAllObjects];
 }
 
-- (CGRect)randomBounds
+- (CGRect)randomBoundsAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat width = (self.collectionView.frame.size.width-self.sectionInset.left - self.sectionInset.right - self.minimumInteritemSpacing*(self.numberOfColumns - 1))/self.numberOfColumns;
-    return CGRectMake(0, 0, width, MAX(arc4random()*1.0/INT32_MAX*200, 80));
+    if ([self.delegate respondsToSelector:@selector(waterFlowLayout:boundsAtIndexPath:)]) {
+        return [self.delegate waterFlowLayout:self boundsAtIndexPath:indexPath];
+    }else{
+        CGFloat width = (self.collectionView.frame.size.width-self.sectionInset.left - self.sectionInset.right - self.minimumInteritemSpacing*(self.numberOfColumns - 1))/self.numberOfColumns;
+        return CGRectMake(0, 0, width, MAX(arc4random()*1.0/INT32_MAX*200, 80));
+    }
 }
 
 - (NSString *)frameKeyAtIndexPath:(NSIndexPath *)indexPath
@@ -159,7 +163,7 @@ static CGFloat itemPadding = 10;
         return CGRectFromString(frameString);
     }
     
-    __block CGRect f = [self randomBounds];
+    __block CGRect f = [self randomBoundsAtIndexPath:indexPath];
     [self getMinBottomCompletion:^(CGFloat minY, NSInteger column) {
         f.origin.x = self.sectionInset.left + (self.minimumInteritemSpacing+f.size.width)*column;
         f.origin.y = minY + self.minimumLineSpacing;
