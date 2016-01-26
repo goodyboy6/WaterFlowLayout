@@ -5,7 +5,7 @@ s.license      = "MIT"
 
 s.name         = "WaterFlowLayout"
 s.version      = "0.0.1"
-s.summary      = "Water Flow Layout"
+s.summary      = "WaterFlowLayout is a subclass of UICollectionViewFlowLayout, it's' very simple. You can very easily control the column count of waterflow"
 
 s.description  = <<-DESC
 Water Flow Layout description
