@@ -1,16 +1,11 @@
 
 Pod::Spec.new do |s|
 
-s.license      = "MIT"
+s.license      = { :type => 'MIT', :file => 'LICENSE' }
 
 s.name         = "WaterFlowLayout"
 s.version      = "0.0.1"
 s.summary      = "WaterFlowLayout is a subclass of UICollectionViewFlowLayout, it's' very simple. You can very easily control the column count of waterflow"
-
-s.description  = <<-DESC
-Water Flow Layout description
-commit:d6ce2d91e220e1f6c5fe8d5ae4bb5897c2d4b972
-DESC
 
 s.homepage     = "https://github.com/goodyboy6/"
 s.author       = {"goodyboy6" => "xiaoluo.yxl@alibaba-inc.com"}
