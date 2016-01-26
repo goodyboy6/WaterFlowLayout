@@ -14,7 +14,7 @@ s.platform     = :ios, '7.0'
 s.ios.deployment_target = '7.0'
 s.requires_arc = true
 
-s.source =  { :git => "https://github.com/goodyboy6/WaterFlowLayout.git" , :tag => "0.0.1"}
+s.source =  { :git => "https://github.com/goodyboy6/WaterFlowLayout.git" , :tag => "0.0.2"}
 s.source_files = 'WaterFlowDemo/Class/*.{h,m}'
 s.public_header_files = "WaterFlowDemo/Class/*.h"
 
