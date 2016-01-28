@@ -20,6 +20,7 @@ WFWaterFlowLayoutDelegate
 >
 
 @property (nonatomic) UICollectionView *collectionView;
+@property (nonatomic) NSMutableArray *dataSource;
 
 @end
 
@@ -45,7 +46,7 @@ WFWaterFlowLayoutDelegate
     self.edgesForExtendedLayout = UIRectEdgeNone;
     
     WFWaterFlowLayout *layout = [WFWaterFlowLayout new];
-    layout.numberOfColumns = 8;
+    layout.numberOfColumns = 2;
     layout.delegate = self;
     
     self.collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:layout];
@@ -55,12 +56,20 @@ WFWaterFlowLayoutDelegate
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:kWFCollectionViewCellID];
     
     [self.view addSubview:self.collectionView];
+    
+    self.dataSource = [NSMutableArray array];
+    UIColor *red = [UIColor redColor];
+    for (NSInteger i = 0; i<100; i++) {
+        [self.dataSource addObject:red];
+    }
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     [self configureView];
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addObject:)];
 }
 
 - (void)viewWillLayoutSubviews
@@ -75,7 +84,15 @@ WFWaterFlowLayoutDelegate
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - 
+- (void)addObject:(id)sender
+{
+    [self.dataSource insertObject:[UIColor blueColor] atIndex:0];
+    
+    WFWaterFlowLayout *flowLayout = (WFWaterFlowLayout *)self.collectionView.collectionViewLayout;
+    [flowLayout clearFrameCache];
+}
+
+#pragma mark -
 - (CGRect)waterFlowLayout:(WFWaterFlowLayout *)layout boundsAtIndexPath:(NSIndexPath *)indexPath//每个cell的bounds
 {
     WFWaterFlowLayout *flowLayout = (WFWaterFlowLayout *)self.collectionView.collectionViewLayout;
@@ -89,14 +106,16 @@ WFWaterFlowLayoutDelegate
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kWFCollectionViewCellID forIndexPath:indexPath];
-    cell.backgroundColor = [UIColor purpleColor];
     
+    UIColor *color = self.dataSource[indexPath.row];
+    cell.contentView.backgroundColor = color;
+
     return cell;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 100;
+    return self.dataSource.count;
 }
 
 @end

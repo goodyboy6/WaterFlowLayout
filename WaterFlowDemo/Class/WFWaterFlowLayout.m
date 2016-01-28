@@ -25,8 +25,8 @@ static CGFloat itemPadding = 10;
         self.frameDictionary = [NSMutableDictionary dictionary];
         self.bottoms = [NSMutableArray array];
         
-        self.numberOfColumns = 5;
-
+        self.numberOfColumns = 1;
+        
         self.scrollDirection = UICollectionViewScrollDirectionVertical;
         self.minimumInteritemSpacing = itemPadding;
         self.minimumLineSpacing = itemPadding;
@@ -40,16 +40,23 @@ static CGFloat itemPadding = 10;
     NSAssert(numberOfColumns!=0, nil);
     
     _numberOfColumns = numberOfColumns;
-    
-    [self.bottoms removeAllObjects];
-    for (NSInteger i=0; i<numberOfColumns; i++) {
-        self.bottoms[i] = @(self.sectionInset.top);
-    }
+    [self resetBottoms];
 }
 
-- (void)prepareLayout
+- (void)clearFrameCache
 {
-    [super prepareLayout];
+    [self resetBottoms];
+    [self.frameDictionary removeAllObjects];
+    
+    [self.collectionView reloadData];
+}
+
+- (void)resetBottoms
+{
+    [self.bottoms removeAllObjects];
+    for (NSInteger i=0; i<self.numberOfColumns; i++) {
+        self.bottoms[i] = @(self.sectionInset.top);
+    }
 }
 
 #pragma mark - overwrite
@@ -88,7 +95,7 @@ static CGFloat itemPadding = 10;
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
 {
-    //scrollview在滚动过程中bounds会发生变化: http://objccn.io/issue-3-2/
+    //scrollview bounds wil change when scrolling: http://objccn.io/issue-3-2/
     BOOL invalidate = self.collectionView.bounds.size.width != newBounds.size.width;
     if (invalidate) {
         [self invalidateOldFrames];
@@ -137,7 +144,6 @@ static CGFloat itemPadding = 10;
     }
 }
 
-//获取最小Y值信息， 及其所在列
 - (void)getMinBottomCompletion:(void(^)(CGFloat minY, NSInteger column))completion
 {
     CGFloat minY = self.bottoms[0].floatValue;
@@ -158,6 +164,7 @@ static CGFloat itemPadding = 10;
 - (CGRect)itemFrameAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *frameKey = [self frameKeyAtIndexPath:indexPath];
+
     NSString *frameString = [self.frameDictionary objectForKey:frameKey];
     if (frameString) {
         return CGRectFromString(frameString);
@@ -169,7 +176,7 @@ static CGFloat itemPadding = 10;
         f.origin.y = minY + self.minimumLineSpacing;
         self.bottoms[column] = @(CGRectGetMaxY(f));
     }];
-    
+
     [self.frameDictionary setObject:NSStringFromCGRect(f) forKey:frameKey];
     
     return f;
