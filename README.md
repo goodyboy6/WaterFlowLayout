@@ -2,7 +2,7 @@
 
 ## git私有库的创建注意点：版本号、tag以及licence
 
-#### warning '[source] The version should be included in the Git tag.'
+> #### warning '[source] The version should be included in the Git tag.'
 > 修改version号和tag号一致后，通过命令pod lib lint检查是ok的，但执行pod trunk push *.podspec之后，会直接提示：
 > [!] The podspec does not validate. 
 > 随后又执行了pod trunk lint *.podspec后，提示
@@ -11,7 +11,7 @@
 > warning: Could not find remote branch 1.0.2 to clone.
 > fatal: Remote branch 1.0.2 not found in upstream origin 
 > 额，原来tag只是被我打在本地了，push到origin就ok了.在通过lint验证就都ok了。
-#### unable to find a license file
+> #### unable to find a license file
 > 将podspec文件中的 s.license = "MIT"修改为s.license = { :type => 'MIT', :file => 'LICENSE' } 
 
 ##参考
