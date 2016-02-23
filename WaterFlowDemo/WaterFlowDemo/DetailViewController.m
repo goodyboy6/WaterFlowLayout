@@ -15,8 +15,7 @@ static NSString *kWFCollectionViewCellID = @"com.alibaba.kWFCollectionViewCellID
 <
 UICollectionViewDataSource,
 UICollectionViewDelegate,
-UICollectionViewDelegateFlowLayout,
-WFWaterFlowLayoutDelegate
+UICollectionViewDelegateFlowLayout
 >
 
 @property (nonatomic) UICollectionView *collectionView;
@@ -47,7 +46,6 @@ WFWaterFlowLayoutDelegate
     
     WFWaterFlowLayout *layout = [WFWaterFlowLayout new];
     layout.numberOfColumns = 2;
-    layout.delegate = self;
     
     self.collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:layout];
     self.collectionView.delegate = self;
@@ -93,13 +91,13 @@ WFWaterFlowLayoutDelegate
 }
 
 #pragma mark -
-- (CGRect)waterFlowLayout:(WFWaterFlowLayout *)layout boundsAtIndexPath:(NSIndexPath *)indexPath//每个cell的bounds
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath//每个cell的bounds
 {
     WFWaterFlowLayout *flowLayout = (WFWaterFlowLayout *)self.collectionView.collectionViewLayout;
     
     CGFloat width = (self.collectionView.frame.size.width-flowLayout.sectionInset.left - flowLayout.sectionInset.right - flowLayout.minimumInteritemSpacing*(flowLayout.numberOfColumns - 1))/flowLayout.numberOfColumns;
     
-    return CGRectMake(0, 0, width, MAX(arc4random()*1.0/INT32_MAX*200, 80));
+    return CGSizeMake(width, MAX(arc4random()*1.0/INT32_MAX*200, 80));
 }
 
 #pragma mark - collection view datasource

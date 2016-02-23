@@ -8,18 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class WFWaterFlowLayout;
-@protocol WFWaterFlowLayoutDelegate <NSObject>
-
-@optional
-- (CGRect)waterFlowLayout:(WFWaterFlowLayout *)layout boundsAtIndexPath:(NSIndexPath *)indexPath;//cell bounds at indexpath
-
-@end
-
-
 @interface WFWaterFlowLayout : UICollectionViewFlowLayout
-
-@property (nonatomic, weak) id<WFWaterFlowLayoutDelegate> delegate;
 
 @property (nonatomic) NSInteger numberOfColumns;//number of column. Default is 1
 

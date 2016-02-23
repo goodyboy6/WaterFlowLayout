@@ -7,6 +7,7 @@
 //
 
 #import "WFWaterFlowLayout.h"
+#import <objc/message.h>
 
 @interface WFWaterFlowLayout ()
 
@@ -114,8 +115,9 @@ static CGFloat itemPadding = 10;
 
 - (CGRect)randomBoundsAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([self.delegate respondsToSelector:@selector(waterFlowLayout:boundsAtIndexPath:)]) {
-        return [self.delegate waterFlowLayout:self boundsAtIndexPath:indexPath];
+    if ([self.collectionView.delegate respondsToSelector:@selector(collectionView:layout:sizeForItemAtIndexPath:)]) {
+        CGSize itemSize = ((CGSize (*)(id, SEL, UICollectionView *, UICollectionViewFlowLayout *, NSIndexPath *))objc_msgSend)(self.collectionView.delegate, @selector(collectionView:layout:sizeForItemAtIndexPath:) , self.collectionView, self, indexPath);
+        return   (CGRect){.size = itemSize};
     }else{
         CGFloat width = (self.collectionView.frame.size.width-self.sectionInset.left - self.sectionInset.right - self.minimumInteritemSpacing*(self.numberOfColumns - 1))/self.numberOfColumns;
         return CGRectMake(0, 0, width, MAX(arc4random()*1.0/INT32_MAX*200, 80));
